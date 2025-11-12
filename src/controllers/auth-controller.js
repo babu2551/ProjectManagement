@@ -2,33 +2,32 @@ import { User } from "../models/user.model.js";
 import { ApiResponse } from "../utils/api-response.js";
 import { ApiError } from "../utils/api-errors.js";
 import { asyncHandler } from "../utils/async-handler.js";
-import { use } from "react";
 import { emailVerificationMailgenContent, sendEmail } from "../utils/mail.js";
 
 const generateAccessAndRefreshToken = async (userId) => {
     try {
-         const user = await User.findById(userId)
+         const user = await User.findById(userId);
          const accessToken = user.generateAccessToken();
          const refreshToken = user.generateRefreshToken();
 
          user.refreshToken = refreshToken
          await user.save({validateBeforeSave: false});
-         return {accessToken, refreshToken}
+         return {accessToken, refreshToken};
 
     } catch (error) {
         throw new ApiError (
             500,
             "Something went wrong while generating access token",
         );
-    };
+    }
 };
 
 const registerUser = asyncHandler(async (req, res) =>{
-   const {email, username, password, role} = req.body
+   const {email, username, password, role} = req.body;
 
  const existingUser = await User.findOne({
     $or: [{username}, {email}]
-   })
+   });
 
    if (existingUser) {
     throw new ApiError(409, "User with email or username already exists",[])
@@ -39,7 +38,7 @@ const registerUser = asyncHandler(async (req, res) =>{
     password,
     username,
     isEmailVerified: false
-   })
+   });
 
   const {unHashedToken, hasedToken, tokenExpiry} =
    user.generateTemporaryToken();
@@ -47,7 +46,7 @@ const registerUser = asyncHandler(async (req, res) =>{
    user.emailVerificationToken = hasedToken
    user.emailVerificationExpiry = tokenExpiry
 
-   await user.save({validateBeforeSave: false})
+   await user.save({validateBeforeSave: false}) ;
 
 
    await sendEmail(
