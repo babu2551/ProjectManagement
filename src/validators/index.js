@@ -34,6 +34,7 @@ const userRegisterValidator = () => {
 
 const userLoginValidator = () => {
     return[
+        
         body("email")
         .optional()
         .isEmail()
