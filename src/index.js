@@ -1,10 +1,10 @@
 import dotenv from "dotenv";
-import app from "./app.js" ;
+import app from "./app.js";
 import connectDB from "./db/index.js";
 
 // import express from "express";
 dotenv.config({
-    path: "./.env",
+  path: "./.env",
 });
 
 // let myusername = process.env.database;
@@ -23,12 +23,12 @@ const port = process.env.PORT || 3000;
 
 
 connectDB()
-.then(()=>{
-   app.listen(port, () => {
-  console.log(`Example app listening on port http://localhost:${port}`);
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`Example app listening on port http://localhost:${port}`);
     });
-})
-.catch((err)=>{
-  console.error("MongoDB connection error", err);
-  process.exit(1);
-});
+  })
+  .catch((err) => {
+    console.error("MongoDB connection error", err);
+    process.exit(1);
+  });
